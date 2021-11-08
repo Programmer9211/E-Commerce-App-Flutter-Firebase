@@ -1,5 +1,6 @@
 import 'package:e_commerce/authentication/otp_verification_screen/otp__screen_view.dart';
 import 'package:e_commerce/const/const.dart';
+import 'package:e_commerce/home_screen/home_screen_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -53,6 +54,8 @@ class LoginScreenController extends GetxController {
       final User? user = signInUser.user;
 
       showAlert("Sign In Sucessfully, User UID : ${user!.uid}");
+
+      Get.to(() => const HomeScreenView());
 
       print("Sign In Sucessfully, User UID : ${user.uid}");
     } catch (e) {
