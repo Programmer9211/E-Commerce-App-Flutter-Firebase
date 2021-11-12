@@ -1,7 +1,9 @@
+import 'package:e_commerce/categories_and_featured_screen/categories_and_featured_screen.dart';
 import 'package:e_commerce/const/const.dart';
 import 'package:e_commerce/home_screen/drawer.dart';
 import 'package:e_commerce/home_screen/home_screen_controller.dart';
 import 'package:e_commerce/home_screen/model_class/categories_model.dart';
+import 'package:e_commerce/items_screen/items_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -82,7 +84,11 @@ class HomeScreenView extends StatelessWidget {
 
                         // categories..
 
-                        categoriesTitle(size, "All Categories", () {}),
+                        categoriesTitle(size, "All Categories", () {
+                          Get.to(() => CategoriesAndFeaturedScreen(
+                                model: controller.categoriesData,
+                              ));
+                        }),
 
                         listViewBuilder(size, controller.categoriesData),
 
@@ -90,7 +96,11 @@ class HomeScreenView extends StatelessWidget {
                           height: size.height / 25,
                         ),
 
-                        categoriesTitle(size, "Featured", () {}),
+                        categoriesTitle(size, "Featured", () {
+                          Get.to(() => CategoriesAndFeaturedScreen(
+                                model: controller.featuredData,
+                              ));
+                        }),
 
                         listViewBuilder(size, controller.featuredData),
                       ],
@@ -128,33 +138,38 @@ class HomeScreenView extends StatelessWidget {
   Widget listViewBuilderItems(Size size, CategoriesModel categroies) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SizedBox(
-        height: size.height / 7,
-        width: size.width / 4.2,
-        child: Column(
-          children: [
-            Container(
-              height: size.height / 10,
-              width: size.width / 2.2,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(categroies.image),
-                ),
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                child: Text(
-                  categroies.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+      child: GestureDetector(
+        onTap: () {
+          Get.to(() => const ItemsScreen());
+        },
+        child: SizedBox(
+          height: size.height / 7,
+          width: size.width / 4.2,
+          child: Column(
+            children: [
+              Container(
+                height: size.height / 10,
+                width: size.width / 2.2,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(categroies.image),
                   ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: SizedBox(
+                  child: Text(
+                    categroies.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
