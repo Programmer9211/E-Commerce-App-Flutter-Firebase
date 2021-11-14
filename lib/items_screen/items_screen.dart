@@ -66,9 +66,9 @@ class ItemsScreen extends StatelessWidget {
             Expanded(
               child: SizedBox(
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     text: "Item Name\n",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
@@ -78,12 +78,20 @@ class ItemsScreen extends StatelessWidget {
                         text: "Price",
                         style: TextStyle(
                           fontSize: 15,
+                          color: Colors.grey[800],
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " Price",
+                        style: const TextStyle(
+                          fontSize: 15,
                           color: Colors.black,
                         ),
                       ),
                       TextSpan(
                         text: " 20% off",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           color: Colors.green,
                         ),
