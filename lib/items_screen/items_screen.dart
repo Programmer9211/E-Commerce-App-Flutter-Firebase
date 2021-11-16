@@ -1,20 +1,33 @@
 import 'package:e_commerce/const/const.dart';
+import 'package:e_commerce/items_screen/item_screen_controller.dart';
+import 'package:e_commerce/items_screen/items_model.dart';
+import 'package:e_commerce/items_screen/searcg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ItemsScreen extends StatelessWidget {
-  ItemsScreen({Key? key}) : super(key: key);
+  final String categoryId, categoryTitle;
+
+  ItemsScreen({Key? key, required this.categoryTitle, required this.categoryId})
+      : super(key: key);
+
+  final controller = Get.put(ItemScreenController());
 
   @override
   Widget build(BuildContext context) {
     final Size size = Get.size;
+
+    controller.categoryTitle = categoryTitle;
+    controller.categoryId = categoryId;
+
+    controller.getSubCategoryData();
 
     return Container(
       color: Colors.blueAccent,
       child: SafeArea(
           child: Scaffold(
         appBar: AppBar(
-          title: Text("Electronics"),
+          title: Text(categoryTitle),
           backgroundColor: Colors.blueAccent,
         ),
         body: SizedBox(
@@ -25,15 +38,24 @@ class ItemsScreen extends StatelessWidget {
               SizedBox(
                 height: size.height / 40,
               ),
-              searchBar(size),
+              searchBar(size, context),
               Expanded(
                 child: SizedBox(
-                  child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return listViewBuilderItems(size);
-                    },
-                  ),
+                  child: GetBuilder<ItemScreenController>(builder: (value) {
+                    if (!value.isLoading) {
+                      return ListView.builder(
+                        itemCount: value.itemsData.length,
+                        itemBuilder: (context, index) {
+                          return listViewBuilderItems(
+                              size, value.itemsData[index]);
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
                 ),
               ),
             ],
@@ -43,7 +65,10 @@ class ItemsScreen extends StatelessWidget {
     );
   }
 
-  Widget listViewBuilderItems(Size size) {
+  Widget listViewBuilderItems(Size size, ItemsModel model) {
+    int discount =
+        controller.calculateDiscount(model.totalPrice, model.sellingPrice);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: Container(
@@ -54,9 +79,9 @@ class ItemsScreen extends StatelessWidget {
             Container(
               height: size.height / 8,
               width: size.width / 4.5,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(image),
+                  image: NetworkImage(model.image),
                 ),
               ),
             ),
@@ -67,7 +92,7 @@ class ItemsScreen extends StatelessWidget {
               child: SizedBox(
                 child: RichText(
                   text: TextSpan(
-                    text: "Item Name\n",
+                    text: "${model.title}\n",
                     style: const TextStyle(
                       fontSize: 18,
                       color: Colors.black,
@@ -75,7 +100,7 @@ class ItemsScreen extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: "Price",
+                        text: "${model.totalPrice}",
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey[800],
@@ -83,14 +108,14 @@ class ItemsScreen extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: " Price",
+                        text: " ${model.sellingPrice}",
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.black,
                         ),
                       ),
                       TextSpan(
-                        text: " 22% off",
+                        text: " $discount% off",
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.green,
@@ -107,9 +132,11 @@ class ItemsScreen extends StatelessWidget {
     );
   }
 
-  Widget searchBar(Size size) {
+  Widget searchBar(Size size, BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        showSearch(context: context, delegate: SeachScreen());
+      },
       child: Material(
         elevation: 2,
         borderRadius: BorderRadius.circular(10),
