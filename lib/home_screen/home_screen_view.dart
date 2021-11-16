@@ -1,5 +1,4 @@
 import 'package:e_commerce/categories_and_featured_screen/categories_and_featured_screen.dart';
-import 'package:e_commerce/const/const.dart';
 import 'package:e_commerce/home_screen/drawer.dart';
 import 'package:e_commerce/home_screen/home_screen_controller.dart';
 import 'package:e_commerce/home_screen/model_class/categories_model.dart';
@@ -140,7 +139,7 @@ class HomeScreenView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
         onTap: () {
-          Get.to(() => const ItemsScreen());
+          Get.to(() => ItemsScreen());
         },
         child: SizedBox(
           height: size.height / 7,

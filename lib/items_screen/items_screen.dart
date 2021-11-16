@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ItemsScreen extends StatelessWidget {
-  const ItemsScreen({Key? key}) : super(key: key);
+  ItemsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class ItemsScreen extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: " 20% off",
+                        text: " 22% off",
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.green,

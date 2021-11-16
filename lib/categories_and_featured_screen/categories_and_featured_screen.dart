@@ -39,7 +39,7 @@ class CategoriesAndFeaturedScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
         onTap: () {
-          Get.to(() => const ItemsScreen());
+          Get.to(() => ItemsScreen());
         },
         child: SizedBox(
           height: size.height / 7,
