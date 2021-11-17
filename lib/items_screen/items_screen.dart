@@ -1,4 +1,3 @@
-import 'package:e_commerce/const/const.dart';
 import 'package:e_commerce/items_screen/item_screen_controller.dart';
 import 'package:e_commerce/items_screen/items_model.dart';
 import 'package:e_commerce/items_screen/searcg.dart';
