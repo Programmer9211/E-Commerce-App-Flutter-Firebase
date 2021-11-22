@@ -1,3 +1,4 @@
+import 'package:e_commerce/cart_screen/cart_screen.dart';
 import 'package:e_commerce/categories_and_featured_screen/categories_and_featured_screen.dart';
 import 'package:e_commerce/home_screen/drawer.dart';
 import 'package:e_commerce/home_screen/home_screen_controller.dart';
@@ -27,7 +28,9 @@ class HomeScreenView extends StatelessWidget {
                   backgroundColor: Colors.blueAccent,
                   actions: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => const CartScreen());
+                      },
                       icon: const Icon(Icons.shopping_cart),
                     ),
                   ],

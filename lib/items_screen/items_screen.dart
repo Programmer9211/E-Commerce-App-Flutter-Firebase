@@ -1,3 +1,4 @@
+import 'package:e_commerce/item_details_screen/item_details_screen.dart';
 import 'package:e_commerce/items_screen/item_screen_controller.dart';
 import 'package:e_commerce/items_screen/items_model.dart';
 import 'package:e_commerce/items_screen/searcg.dart';
@@ -83,62 +84,67 @@ class ItemsScreen extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-      child: Container(
-        height: size.height / 8,
-        width: size.width / 1.1,
-        child: Row(
-          children: [
-            Container(
-              height: size.height / 8,
-              width: size.width / 4.5,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(model.image),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: size.width / 22,
-            ),
-            Expanded(
-              child: SizedBox(
-                child: RichText(
-                  text: TextSpan(
-                    text: "${model.title}\n",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "${model.totalPrice}",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey[800],
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " ${model.sellingPrice}",
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " $discount% off",
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.green,
-                        ),
-                      )
-                    ],
+      child: GestureDetector(
+        onTap: () {
+          Get.to(() => const ItemScreenDetails());
+        },
+        child: Container(
+          height: size.height / 8,
+          width: size.width / 1.1,
+          child: Row(
+            children: [
+              Container(
+                height: size.height / 8,
+                width: size.width / 4.5,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(model.image),
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                width: size.width / 22,
+              ),
+              Expanded(
+                child: SizedBox(
+                  child: RichText(
+                    text: TextSpan(
+                      text: "${model.title}\n",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "${model.totalPrice}",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[800],
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " ${model.sellingPrice}",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " $discount% off",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.green,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
