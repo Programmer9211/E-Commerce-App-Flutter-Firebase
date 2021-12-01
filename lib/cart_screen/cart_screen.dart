@@ -1,9 +1,13 @@
+import 'package:e_commerce/cart_screen/cart_screen_controller.dart';
 import 'package:e_commerce/const/const.dart';
+import 'package:e_commerce/item_details_screen/item_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  CartScreen({Key? key}) : super(key: key);
+
+  final controller = Get.put(CartScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -11,64 +15,75 @@ class CartScreen extends StatelessWidget {
 
     return Container(
       color: Colors.blueAccent,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("My Cart"),
-            backgroundColor: Colors.blueAccent,
-          ),
-          body: SizedBox(
-            height: size.height,
-            width: size.width,
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return cartItems(size);
-              },
+      child: SafeArea(child: GetBuilder<CartScreenController>(builder: (value) {
+        if (!controller.isLoading) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("My Cart"),
+              backgroundColor: Colors.blueAccent,
             ),
-          ),
-          bottomNavigationBar: SizedBox(
-            height: size.height / 12,
-            width: size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Rs. 100000",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+            body: SizedBox(
+              height: size.height,
+              width: size.width,
+              child: ListView.builder(
+                itemCount: controller.productsDetails.length,
+                itemBuilder: (context, index) {
+                  return cartItems(size, controller.productsDetails[index]);
+                },
+              ),
+            ),
+            bottomNavigationBar: SizedBox(
+              height: size.height / 12,
+              width: size.width,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Rs. 100000",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: size.height / 18,
-                      width: size.width / 2.8,
-                      alignment: Alignment.center,
-                      color: Colors.blueAccent,
-                      child: const Text(
-                        "Checkout",
-                        style: TextStyle(
-                          fontSize: 17.5,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        height: size.height / 18,
+                        width: size.width / 2.8,
+                        alignment: Alignment.center,
+                        color: Colors.blueAccent,
+                        child: const Text(
+                          "Checkout",
+                          style: TextStyle(
+                            fontSize: 17.5,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
+          );
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      })),
     );
   }
 
-  Widget cartItems(Size size) {
+  Widget cartItems(Size size, ItemDetailModel model) {
+    int discount =
+        controller.calculateDiscount(model.totalPrice, model.sellingPrice);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
       child: Container(
@@ -93,7 +108,7 @@ class CartScreen extends StatelessWidget {
                       width: size.width / 4.5,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: NetworkImage(model.img),
                         ),
                       ),
                     ),
@@ -104,7 +119,7 @@ class CartScreen extends StatelessWidget {
                       child: SizedBox(
                         child: RichText(
                           text: TextSpan(
-                            text: "Product Name\n",
+                            text: "${model.title}\n",
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,
@@ -112,7 +127,7 @@ class CartScreen extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
-                                text: "86000",
+                                text: "${model.totalPrice}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.grey[800],
@@ -120,14 +135,14 @@ class CartScreen extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: " 56000",
+                                text: " ${model.sellingPrice}",
                                 style: const TextStyle(
                                   fontSize: 15,
                                   color: Colors.black,
                                 ),
                               ),
                               TextSpan(
-                                text: " 36% off",
+                                text: " $discount% off",
                                 style: const TextStyle(
                                   fontSize: 15,
                                   color: Colors.green,
@@ -142,16 +157,18 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Text(
-              "Will be Delivered in 7 days",
-              style: TextStyle(
+            Text(
+              "Will be Delivered in ${model.deliveryDays} days",
+              style: const TextStyle(
                 color: Colors.green,
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                controller.removeFromCart(model.id);
+              },
               title: const Text("Remove From Cart"),
               trailing: Icon(Icons.delete),
             ),

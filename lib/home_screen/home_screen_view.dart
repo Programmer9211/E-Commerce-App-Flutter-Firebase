@@ -29,7 +29,7 @@ class HomeScreenView extends StatelessWidget {
                   actions: [
                     IconButton(
                       onPressed: () {
-                        Get.to(() => const CartScreen());
+                        Get.to(() => CartScreen());
                       },
                       icon: const Icon(Icons.shopping_cart),
                     ),
