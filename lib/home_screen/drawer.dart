@@ -1,4 +1,6 @@
+import 'package:e_commerce/my_orders/my_orders_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeScreenDrawer extends StatelessWidget {
   const HomeScreenDrawer({Key? key}) : super(key: key);
@@ -18,43 +20,12 @@ class HomeScreenDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.shopping_cart),
+            onTap: () {
+              Get.to(() => const MyOrdersScreen());
+            },
+            leading: const Icon(Icons.shopping_bag),
             title: const Text(
-              "Cart",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text(
-              "Cart",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text(
-              "Cart",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text(
-              "Cart",
+              "My Orders",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
