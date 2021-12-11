@@ -9,6 +9,7 @@ class CartScreenController extends GetxController {
   List productIds = [];
   List<ItemDetailModel> productsDetails = [];
   bool isLoading = true;
+  int totalPrice = 0, totalDiscount = 0, totalSellingPrice = 0;
 
   Future<void> getCartItems() async {
     productsDetails = [];
@@ -40,6 +41,8 @@ class CartScreenController extends GetxController {
       }
     }
 
+    calculatePrice();
+
     isLoading = false;
     update();
   }
@@ -65,6 +68,15 @@ class CartScreenController extends GetxController {
     double discount = ((totalPrice - sellingPrice) / totalPrice) * 100;
 
     return discount.toInt();
+  }
+
+  void calculatePrice() {
+    for (var item in productsDetails) {
+      totalPrice = totalPrice + item.totalPrice;
+      totalSellingPrice = totalSellingPrice + item.sellingPrice;
+    }
+
+    totalDiscount = totalPrice - totalSellingPrice;
   }
 
   @override

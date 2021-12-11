@@ -1,5 +1,7 @@
 import 'package:e_commerce/const/const.dart';
 import 'package:e_commerce/my_order_details/my_order_details.dart';
+import 'package:e_commerce/my_orders/model.dart';
+import 'package:e_commerce/my_orders/my_order_contoller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,35 +12,49 @@ class MyOrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = Get.size;
 
+    final controller = Get.put(MyOrderController());
+
     return Container(
       color: Colors.blueAccent,
       child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text("My Orders"),
-            backgroundColor: Colors.blueAccent,
-          ),
-          body: SizedBox(
-            height: size.height,
-            width: size.width,
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return listViewBuilderItems(size);
-              },
-            ),
-          ),
-        ),
+        child: GetBuilder<MyOrderController>(builder: (value) {
+          if (!value.isLoading) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text("My Orders"),
+                backgroundColor: Colors.blueAccent,
+              ),
+              body: SizedBox(
+                height: size.height,
+                width: size.width,
+                child: ListView.builder(
+                  itemCount: value.model.length,
+                  itemBuilder: (context, index) {
+                    return listViewBuilderItems(size, value.model[index]);
+                  },
+                ),
+              ),
+            );
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        }),
       ),
     );
   }
 
-  Widget listViewBuilderItems(Size size) {
+  Widget listViewBuilderItems(Size size, MyOrdersModel model) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: GestureDetector(
         onTap: () {
-          Get.to(() => const MyOrderDetailsScreen());
+          Get.to(() => MyOrderDetailsScreen(
+                model: model,
+              ));
         },
         child: Container(
           height: size.height / 8,
@@ -48,9 +64,9 @@ class MyOrdersScreen extends StatelessWidget {
               Container(
                 height: size.height / 8,
                 width: size.width / 4.5,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(image),
+                    image: NetworkImage(model.image),
                   ),
                 ),
               ),
@@ -60,8 +76,8 @@ class MyOrdersScreen extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   child: RichText(
-                    text: const TextSpan(
-                      text: "Product Name\n",
+                    text: TextSpan(
+                      text: "${model.name}\n",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -69,10 +85,13 @@ class MyOrdersScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: "Status : Delivered",
+                          text: model.status == 0
+                              ? "Status : Pending"
+                              : "Status : Delivered",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.green,
+                            color:
+                                model.status == 0 ? Colors.grey : Colors.green,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

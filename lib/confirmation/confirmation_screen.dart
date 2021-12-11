@@ -1,8 +1,11 @@
+import 'package:e_commerce/confirmation/confirmation_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ConfirmationScreen extends StatelessWidget {
-  const ConfirmationScreen({Key? key}) : super(key: key);
+  ConfirmationScreen({Key? key}) : super(key: key);
+
+  final controller = Get.put(ConfirmationScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,9 @@ class ConfirmationScreen extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              controller.onPay();
+            },
             child: Container(
               height: size.height / 12,
               width: size.width / 1.2,
@@ -68,13 +73,13 @@ class ConfirmationScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Name",
+              controller.name,
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                "Address",
+                controller.address,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -82,7 +87,7 @@ class ConfirmationScreen extends StatelessWidget {
               ),
             ),
             Text(
-              "Pincode",
+              controller.pincode,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
           ],
@@ -136,12 +141,12 @@ class ConfirmationScreen extends StatelessWidget {
             SizedBox(
               height: size.height / 40,
             ),
-            text('Total Price :', 'Rs. 15000'),
+            text('Total Price :', 'Rs. ${controller.totalPrice}'),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
-              child: text('Discount :', 'Rs. 1000'),
+              child: text('Discount :', 'Rs. ${controller.totalDiscount}'),
             ),
-            text('Payable Price :', 'Rs. 14000'),
+            text('Payable Price :', 'Rs. ${controller.payablePrice}'),
           ],
         ),
       ),

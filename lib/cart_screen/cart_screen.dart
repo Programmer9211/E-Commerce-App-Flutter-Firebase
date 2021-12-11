@@ -42,8 +42,8 @@ class CartScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Rs. 100000",
+                    Text(
+                      "Rs. ${value.totalPrice}",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,

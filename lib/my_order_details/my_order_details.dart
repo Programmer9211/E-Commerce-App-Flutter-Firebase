@@ -1,9 +1,11 @@
 import 'package:e_commerce/const/const.dart';
+import 'package:e_commerce/my_orders/model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyOrderDetailsScreen extends StatelessWidget {
-  const MyOrderDetailsScreen({Key? key}) : super(key: key);
+  final MyOrdersModel model;
+  const MyOrderDetailsScreen({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +31,18 @@ class MyOrderDetailsScreen extends StatelessWidget {
                   Container(
                     height: size.height / 5,
                     width: size.width / 1.1,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(image),
+                        image: NetworkImage(model.image),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: size.height / 30,
                   ),
-                  const Text(
-                    "Product Name",
-                    style: TextStyle(
+                  Text(
+                    model.name,
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
                     ),
@@ -103,15 +105,16 @@ class MyOrderDetailsScreen extends StatelessWidget {
             SizedBox(
               height: size.height / 40,
             ),
-            text('Order Id :', '1359846546515'),
+            text('Order Id :', model.orderId),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              child: text('Total Price :', 'Rs. 1000'),
+              child: text('Total Price :', model.totalPrice.toString()),
             ),
-            text('Paid amount :', 'Rs. 599'),
+            text('Paid amount :', model.paidAmount.toString()),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              child: text('Status :', 'Delivered'),
+              child:
+                  text('Status :', model.status == 0 ? 'Pending' : 'Delivered'),
             ),
             text('Ordered on :', '24-10-2021'),
             Padding(
