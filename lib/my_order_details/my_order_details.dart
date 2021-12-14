@@ -16,7 +16,7 @@ class MyOrderDetailsScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Product Name"),
+            title: Text(model.name),
             backgroundColor: Colors.blueAccent,
           ),
           body: SizedBox(
@@ -116,11 +116,11 @@ class MyOrderDetailsScreen extends StatelessWidget {
               child:
                   text('Status :', model.status == 0 ? 'Pending' : 'Delivered'),
             ),
-            text('Ordered on :', '24-10-2021'),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: text('Delivered on :', '28-10-2021'),
-            ),
+            text('Ordered on :', '11-12-2021'),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 12),
+            //   child: text('Delivered on :', '28-10-2021'),
+            // ),
           ],
         ),
       ),
